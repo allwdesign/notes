@@ -24,3 +24,17 @@ def display_help():
            'help - Вызвать справку по командам\n'
            'save - Сохранить заметки в файл'))
     print(len(start_str) * '-')
+
+
+def display_add():
+    """
+    Displays to the user adding interaction.
+
+    :return: None
+    """
+    tittle = input("Введите заголовок заметки: ")
+    print(f"заголовок = {tittle}")
+    msg = input("Введите тело заметки: ")
+    print(f"тело = {msg}")
+    return tittle, msg
+
