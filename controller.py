@@ -6,6 +6,7 @@ view, and the handling of the data to the model.
 
 import sys
 import views
+from utils import load_from_json_file
 
 COMMANDS = ['add', 'list', 'read', 'edit', 'del', 'exit', 'help', 'save']
 
@@ -17,6 +18,7 @@ def execute_command(command: str):
     :param command: str
     :return: None
     """
+
     match command:
         case 'save':
             pass
@@ -41,13 +43,15 @@ def run():
     """
     Run interaction with user.
 
-    :return:
+    :return: None
     """
-    # Getting data with notes from a file
-    # Show the hint to the user
-    views.display_help()
 
     try:
+        # Getting data with notes from a file
+        notes = load_from_json_file()
+        # Show the hint to the user
+        views.display_help()
+
         while True:
             # We try to execute the command received from the user
             command = input('Введите команду: ')
