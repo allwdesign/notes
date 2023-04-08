@@ -2,6 +2,7 @@
 
 Entry point to the Notes app.
 """
+
 import controller
 
 if __name__ == '__main__':
