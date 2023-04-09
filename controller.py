@@ -47,7 +47,10 @@ def execute_command(command: str, notes: Notes) -> None:
         case 'del':
             notes.delete(id)
         case 'edit':
-            pass
+            kwargs = views.display_edit(id)
+            if kwargs:
+                notes.edit(**kwargs)
+
         case _:
             # read
             views.display_note(notes.read(id))
