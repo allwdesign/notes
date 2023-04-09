@@ -4,6 +4,7 @@ Presents the data to the user.
 """
 
 from datetime import datetime
+
 import pytz
 
 QUANTITY = 60
@@ -61,30 +62,23 @@ def __make_formatted_data(note: dict) -> str:
     :param note: dict. Information about note.
     :return: str. Formatted string.
     """
-    result = ''
-    try:
+    format_date = "%d-%m-%y %H:%M:%S"
+    # Make a datetime object from the string
+    date_cr_obj = datetime.strptime(note['date_of_create'],
+                                    '%Y-%m-%d %H:%M:%S.%f')
+    date_up_obj = datetime.strptime(note['date_of_update'],
+                                    '%Y-%m-%d %H:%M:%S.%f')
+    # Make a different output format
+    date_cr_utc = pytz.utc.localize(date_cr_obj).strftime(format_date)
+    date_update_utc = pytz.utc.localize(date_up_obj).strftime(format_date)
 
-        format_date = "%d-%m-%y %H:%M:%S"
-        # Make a datetime object from the string
-        date_cr_obj = datetime.strptime(note['date_of_create'],
-                                        '%Y-%m-%d %H:%M:%S.%f')
-        date_up_obj = datetime.strptime(note['date_of_update'],
-                                        '%Y-%m-%d %H:%M:%S.%f')
-        # Make a different output format
-        date_cr_utc = pytz.utc.localize(date_cr_obj).strftime(format_date)
-        date_update_utc = pytz.utc.localize(date_up_obj).strftime(format_date)
-
-        result = (f"{QUANTITY * '-'}\n"
-                  f"ID: {note['id']}\n"
-                  f"Заголовок: {note['tittle']}\n"
-                  f"Заметка: {note['msg']}\n"
-                  f"Дата создания: {date_cr_utc}\n"
-                  f"Дата обновления: {date_update_utc}\n"
-                  f"{QUANTITY * '-'}")
-    except TypeError:
-        result = "Заметка отсутствует"
-    finally:
-        return result
+    return (f"{QUANTITY * '-'}\n"
+            f"ID: {note['id']}\n"
+            f"Заголовок: {note['tittle']}\n"
+            f"Заметка: {note['msg']}\n"
+            f"Дата создания: {date_cr_utc}\n"
+            f"Дата обновления: {date_update_utc}\n"
+            f"{QUANTITY * '-'}")
 
 
 def display_need_id():

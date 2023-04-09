@@ -7,9 +7,10 @@ view, and the handling of the data to the model.
 import sys
 import uuid
 from datetime import datetime
+
 import views
-from utils import load_from_json_file
 from model import Notes
+from utils import load_from_json_file
 
 COMMANDS = ['add', 'list', 'read', 'edit', 'del', 'exit', 'help', 'save']
 NEED_ID = ['read', 'edit', 'del']
@@ -20,9 +21,10 @@ def execute_command(command: str, notes: Notes) -> None:
     Execute the command received from the user.
 
     :param notes: Notes.
-    :param command: str
+    :param command: str. The command received from the user.
     :return: None
     """
+
     if command in NEED_ID:
         id = views.display_need_id()
 
@@ -43,7 +45,7 @@ def execute_command(command: str, notes: Notes) -> None:
         case 'exit':
             sys.exit()
         case 'del':
-            pass
+            notes.delete(id)
         case 'edit':
             pass
         case _:
@@ -58,17 +60,18 @@ def run() -> None:
     :return: None
     """
 
-    try:
-        # Getting data with notes from a file
-        notes = Notes(load_from_json_file())
-        # Show the hint to the user
-        views.display_help()
-
-        while True:
+    # Getting data with notes from a file
+    notes = Notes(load_from_json_file())
+    # Show the hint to the user
+    views.display_help()
+    while True:
+        try:
             # We try to execute the command received from the user
-            command = input('Введите команду: ')
+            command = input('Введите команду: ').lower()
             # Validate command
-            if command.lower() in COMMANDS:
-                execute_command(command.lower(), notes)
-    except ValueError as e:
-        print(e)
+            if command in COMMANDS:
+                execute_command(command, notes)
+            else:
+                print('Неверная команда!')
+        except (AttributeError, IndexError, ValueError, TypeError):
+            print('Такой заметки не существует! Попробуйте еще раз.')

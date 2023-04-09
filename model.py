@@ -34,6 +34,7 @@ class Notes:
         :return: None
         """
         self.collections.append(note)
+        print(note['id'])
 
     def read(self, id: str) -> dict:
         """
@@ -64,7 +65,4 @@ class Notes:
         self.collections.remove(note)
 
     def __get_note_by_id(self, id: str):
-        try:
-            return list(filter(lambda x: x['id'] == id, self.collections))[0]
-        except AttributeError as ae:
-            print("Такой заметки не существует!")
+        return list(filter(lambda x: x['id'] == id, self.collections))[0]
