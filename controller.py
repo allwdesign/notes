@@ -65,6 +65,6 @@ def run() -> None:
             # We try to execute the command received from the user
             command = input('Введите команду: ')
             if command.lower() in COMMANDS:
-                execute_command(command, notes)
+                execute_command(command.lower(), notes)
     except ValueError as e:
         print(e)
