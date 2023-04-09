@@ -45,6 +45,33 @@ def display_add():
     return tittle, msg
 
 
+def display_edit(id):
+    res = dict()
+    variants = ['t', 'm', 'a', 'c']
+    print(f"Редактирование Заметки id: {id}")
+    print(("Опции редактировать:\n"
+           "t - Заголовок\n"
+           "m - Тело заметки\n"
+           "a - Всё\n"
+           "с - Отменить редактирование"))
+    choice = input("Выбeрите, что хотите отредактировать: ").lower()
+    if choice in variants:
+        match choice:
+            case 't':
+                new_tittle = input("Введите заголовок заметки: ")
+                res.update({'id': id, 'tittle': new_tittle})
+            case 'm':
+                new_msg = input("Введите тело заметки: ")
+                res.update({'id': id, 'msg': new_msg})
+            case 'a':
+                new_tittle = input("Введите заголовок заметки: ")
+                new_msg = input("Введите тело заметки: ")
+                res.update({'id': id, 'tittle': new_tittle, 'msg': new_msg})
+            case _:
+                print("Отмена редактирования")
+    return res
+
+
 def display_note(note: dict) -> None:
     """
     Display a specific note.
