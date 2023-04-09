@@ -1,6 +1,6 @@
 """This is the utils module.
 
-Module for storing information between program launches.
+Module for storing information to the file between program launches.
 """
 
 from os import path

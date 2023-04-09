@@ -12,24 +12,37 @@ class Notes:
     """
 
     def __init__(self, data: list):
-        self.collections = data
+        self.collection = data
 
     def __str__(self):
-        return f"Notes: {self.collections}"
+        return f"Notes: {self.collection}"
 
     def __repr__(self):
-        return f"Notes({self.collections})"
+        return f"Notes({self.collection})"
 
-    def __get_note_by_id(self, id: str):
-        return list(filter(lambda x: x['id'] == id, self.collections))[0]
+    def __bool__(self):
+        return bool(self.collection)
+
+    def __len__(self):
+        return len(self.collection)
+
+    def __get_note_by_id(self, id: str) -> dict:
+        """
+        Get note by given ID.
+
+        :param id: str. The note ID we want to get.
+        :return: dict. The note we want to get.
+        """
+        return list(filter(lambda x: x['id'] == id, self.collection))[0]
 
     def get_notes(self) -> list:
         """
-        Get collections of notes.
+        Get sorted collections of notes by date_of_update field in descending
+        order.
 
         :return: list
         """
-        return self.collections
+        return self.collection
 
     def add(self, note: dict) -> None:
         """
@@ -38,49 +51,47 @@ class Notes:
         :param note: dict. Note object.
         :return: None
         """
-        self.collections.append(note)
-        print(note['id'])
+        self.collection.append(note)
 
     def read(self, id: str) -> dict:
         """
         Read the note from collection.
 
-        :param id: str. Note id.
+        :param id: str. The note ID we want to read.
         :return: dict
         """
         return self.__get_note_by_id(id)
 
-    def edit(self, **kwargs) -> None:
+    def edit(self, note: dict, **kwargs) -> None:
         """
         Edit the note from collection.
 
-        :param kwargs: Can be id, tittle, msg.
+        :param note: dict. The note we want to update.
+        :param kwargs: Can contain keys: the tittle, the msg or both.
         :return: None
         """
-        note = self.__get_note_by_id(kwargs['id'])
         kwargs.update({'date_of_update': str(datetime.now())})
         note.update(kwargs)
 
-    def delete(self, id: str) -> None:
+    def delete(self, note: dict) -> None:
         """
         Delete the note from collection.
 
-        :param id: str. Note id.
+        :param note: dict. The note we want to delete.
         :return: None
         """
-        note = self.__get_note_by_id(id)
-        self.collections.remove(note)
+        self.collection.remove(note)
 
     def sort(self, field: str) -> list:
         """
-        Sorts the list of notes by the given field.
+        Sorts the list of notes by the given field. In descending order.
 
         :param field: str. The field by which we will sort the notes.
         :return: list
         """
         sorted = []
 
-        for x in self.collections:
+        for x in self.collection:
             i = 0
             for y in sorted:
                 if x[field] >= y[field]:

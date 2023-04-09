@@ -5,8 +5,6 @@ Presents the data to the user.
 
 from datetime import datetime
 
-import pytz
-
 QUANTITY = 60
 
 
@@ -19,6 +17,7 @@ def display_help():
     start_str = 'В этом приложении вы можете использовать следующие команды: '
     app_name = 'ЗАМЕТКИ'
     div_string = int((len(start_str) - len(app_name)) / 2)
+    print(len(start_str) * '-')
     print(div_string * ' ', app_name, div_string * ' ')
     print(len(start_str) * '-')
     print(start_str)
@@ -32,9 +31,22 @@ def display_help():
     print(len(start_str) * '-')
 
 
+def display_get_user_command() -> str:
+    """
+    Displays to the user adding command interaction.
+
+    :return: str.
+    """
+    print()
+    user_input = input('Введите команду: ').lower()
+    print()
+    return user_input
+
+
 def display_notes(sorted_notes: list) -> None:
     """
-    Shows a list of notes sorted by update date.
+    Shows a list of notes sorted by date of update in descending order.
+
     :param sorted_notes: list.
     :return: None
     """
@@ -49,50 +61,57 @@ def display_notes(sorted_notes: list) -> None:
     print(f"{QUANTITY * '-'}")
 
 
-def display_add():
+def display_add() -> tuple:
     """
     Displays to the user adding interaction.
 
-    :return: None
+    :return: tuple. tittle, msg
     """
+    print(f"{QUANTITY * '-'}")
+    print(f"Добавление Заметки")
+    print(f"{QUANTITY * '-'}")
     tittle = input("Введите заголовок заметки: ")
-    print(f"заголовок = {tittle}")
     msg = input("Введите тело заметки: ")
-    print(f"тело = {msg}")
+
     return tittle, msg
 
 
-def display_edit(id: str) -> dict:
+def display_edit() -> dict:
     """
     Displays to the user edit interaction.
 
-    :param id: str. Note ID.
     :return: dict
     """
     res = dict()
     variants = ['t', 'm', 'a', 'c']
-    print(f"Редактирование Заметки id: {id}")
+
+    print(f"{QUANTITY * '-'}")
+    print(f"Редактирование Заметки")
+    print(f"{QUANTITY * '-'}")
     print(("Опции редактирования:\n"
            "t - Заголовок\n"
            "m - Тело заметки\n"
            "a - Всё\n"
            "с - Отменить редактирование"))
+    print(f"{QUANTITY * '-'}")
+
     choice = input("Выбeрите, что хотите отредактировать: ").lower()
+    print(f"{QUANTITY * '-'}")
 
     if choice not in variants:
-        raise ValueError
+        raise ValueError('Неверная команда!')
 
     match choice:
         case 't':
             new_tittle = input("Введите заголовок заметки: ")
-            res.update({'id': id, 'tittle': new_tittle})
+            res.update({'tittle': new_tittle})
         case 'm':
             new_msg = input("Введите тело заметки: ")
-            res.update({'id': id, 'msg': new_msg})
+            res.update({'msg': new_msg})
         case 'a':
             new_tittle = input("Введите заголовок заметки: ")
             new_msg = input("Введите тело заметки: ")
-            res.update({'id': id, 'tittle': new_tittle, 'msg': new_msg})
+            res.update({'tittle': new_tittle, 'msg': new_msg})
         case _:
             print("Отмена редактирования")
     return res
@@ -100,7 +119,7 @@ def display_edit(id: str) -> dict:
 
 def display_note(note: dict) -> None:
     """
-    Display a specific note.
+    Display to the user a specific note.
 
     :param note: dict. Note.
     :return: None
@@ -121,21 +140,75 @@ def __make_formatted_data(note: dict) -> str:
                                     '%Y-%m-%d %H:%M:%S.%f')
     date_up_obj = datetime.strptime(note['date_of_update'],
                                     '%Y-%m-%d %H:%M:%S.%f')
-    # Make a different output format
-    date_cr_utc = pytz.utc.localize(date_cr_obj).strftime(format_date)
-    date_update_utc = pytz.utc.localize(date_up_obj).strftime(format_date)
+    # Make a User-friendly output format
+    date_cr_utc = date_cr_obj.strftime(format_date)
+    date_update_utc = date_up_obj.strftime(format_date)
 
-    return (f"{QUANTITY * '-'}\n"
+    return (f"{QUANTITY * '-'}\n\n"
             f"ID: {note['id']}\n"
             f"Заголовок: {note['tittle']}\n"
             f"Заметка: {note['msg']}\n"
             f"Дата создания: {date_cr_utc}\n"
-            f"Дата обновления: {date_update_utc}\n"
+            f"Дата обновления: {date_update_utc}\n\n"
             f"{QUANTITY * '-'}")
 
 
 def display_need_id():
-    return input('Введите идентификатор заметки: ')
+    """
+    Displays a prompt for a note ID.
 
-def display_result(msg):
+    :return: str. User input ID.
+    """
+    id = input('Введите ID заметки: ')
+    print()
+    return id
+
+
+def display_result(msg: str) -> None:
+    """
+    Displays a message to the user about successfully completed commands.
+
+    :param msg: str. Message for successfully pattern.
+    :return: None
+    """
+    print()
     print(f'Заметка успешно {msg}.')
+    print()
+
+
+def display_delete() -> None:
+    """
+    Displays to the user delete interaction.
+
+    :return: None
+    """
+    print(f"{QUANTITY * '-'}")
+    print(f"Удаление Заметки")
+    print(f"{QUANTITY * '-'}")
+
+
+def display_save_before_exit() -> bool:
+    """
+    Displays to the user save interaction before user exit from app.
+
+    :return: bool. Whether the user needs to save notes to a file.
+    """
+    flag = False
+    variants = ['y', 'n']
+    print(f"{QUANTITY * '-'}")
+    print(f"Выход из приложения Заметки")
+    print(f"{QUANTITY * '-'}")
+    print(("Опции для сохранения:\n"
+           "y - Да\n"
+           "n - Нет"))
+    print(f"{QUANTITY * '-'}")
+    choice = input("Хотите ли вы сохранить заметки в файл: ").lower()
+    print(f"{QUANTITY * '-'}")
+
+    if choice not in variants:
+        raise ValueError('Неверная команда!')
+
+    if choice == 'y':
+        flag = True
+
+    return flag
