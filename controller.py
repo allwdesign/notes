@@ -77,3 +77,6 @@ def run() -> None:
                 print('Неверная команда!')
         except (AttributeError, IndexError, ValueError, TypeError):
             print('Такой заметки не существует! Попробуйте еще раз.')
+        except Exception:
+            print(('Пока нет заметок. Можете добавить заметку с промощью'
+                   ' команды add.'))

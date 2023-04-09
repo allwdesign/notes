@@ -20,6 +20,9 @@ class Notes:
     def __repr__(self):
         return f"Notes({self.collections})"
 
+    def __get_note_by_id(self, id: str):
+        return list(filter(lambda x: x['id'] == id, self.collections))[0]
+
     def get_notes(self) -> list:
         """
         Get collections of notes.
@@ -68,5 +71,20 @@ class Notes:
         note = self.__get_note_by_id(id)
         self.collections.remove(note)
 
-    def __get_note_by_id(self, id: str):
-        return list(filter(lambda x: x['id'] == id, self.collections))[0]
+    def sort(self, field: str) -> list:
+        """
+        Sorts the list of notes by the given field.
+
+        :param field: str. The field by which we will sort the notes.
+        :return: list
+        """
+        sorted = []
+
+        for x in self.collections:
+            i = 0
+            for y in sorted:
+                if x[field] <= y[field]:
+                    break
+                i += 1
+            sorted[i:i] = [x]
+        return sorted

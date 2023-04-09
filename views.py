@@ -32,6 +32,23 @@ def display_help():
     print(len(start_str) * '-')
 
 
+def display_notes(sorted_notes: list) -> None:
+    """
+    Shows a list of notes sorted by update date.
+    :param sorted_notes: list.
+    :return: None
+    """
+    if not sorted_notes:
+        raise Exception
+
+    print(f"{QUANTITY * '-'}")
+    print(f'Всего заметок: {len(sorted_notes)}.')
+    for note in sorted_notes:
+        # note is dict
+        print(__make_formatted_data(note))
+    print(f"{QUANTITY * '-'}")
+
+
 def display_add():
     """
     Displays to the user adding interaction.
