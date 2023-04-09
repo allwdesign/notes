@@ -42,7 +42,7 @@ class Notes:
         :param id: str. Note id.
         :return: dict
         """
-        print("Прочли")
+        return self.__get_note_by_id(id)
 
     def edit(self, **kwargs) -> None:
         """
@@ -61,3 +61,9 @@ class Notes:
         :return: None
         """
         print("Удалили")
+
+    def __get_note_by_id(self, id: str):
+        try:
+            return list(filter(lambda x: x['id'] == id, self.collections))[0]
+        except AttributeError as ae:
+            print("Такой заметки не существует!")
