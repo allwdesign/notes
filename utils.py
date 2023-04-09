@@ -10,9 +10,15 @@ import json
 JSON_FILE = path.abspath('notes.json')
 
 
-def create_json_file():
+def save_to_file(notes: list) -> None:
+    """
+    Save the list with notes to a file.
+
+    :param notes: list with notes.
+    :return: None
+    """
     with open(JSON_FILE, 'w', encoding='utf-8') as outfile:
-        json.dump([],
+        json.dump(notes,
                   outfile,
                   ensure_ascii=False,
                   indent=4,
@@ -27,7 +33,7 @@ def load_from_json_file() -> list:
     :return: list with notes
     """
     if not path.isfile(JSON_FILE):
-        create_json_file()
+        save_to_file([])
 
     with open(JSON_FILE, 'r', encoding='utf-8') as f:
         notes = json.load(f)
