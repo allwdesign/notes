@@ -136,3 +136,6 @@ def __make_formatted_data(note: dict) -> str:
 
 def display_need_id():
     return input('Введите идентификатор заметки: ')
+
+def display_result(msg):
+    print(f'Заметка успешно {msg}.')

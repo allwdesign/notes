@@ -37,5 +37,4 @@ def load_from_json_file() -> list:
 
     with open(JSON_FILE, 'r', encoding='utf-8') as f:
         notes = json.load(f)
-    print('Заметки загружены из файла', notes)
     return notes
