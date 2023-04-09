@@ -41,7 +41,7 @@ def execute_command(command: str, notes: Notes) -> None:
                        'date_of_create': str(datetime.now()),
                        'date_of_update': str(datetime.now())})
         case 'list':
-            pass
+            views.display_notes(notes.sort('date_of_update'))
         case 'exit':
             sys.exit()
         case 'del':
@@ -50,7 +50,6 @@ def execute_command(command: str, notes: Notes) -> None:
             kwargs = views.display_edit(id)
             if kwargs:
                 notes.edit(**kwargs)
-
         case _:
             # read
             views.display_note(notes.read(id))
