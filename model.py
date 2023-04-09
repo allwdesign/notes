@@ -60,7 +60,8 @@ class Notes:
         :param id: str. Note id.
         :return: None
         """
-        print("Удалили")
+        note = self.__get_note_by_id(id)
+        self.collections.remove(note)
 
     def __get_note_by_id(self, id: str):
         try:
