@@ -10,7 +10,7 @@ from datetime import datetime
 
 import views
 from model import Notes
-from utils import load_from_json_file
+from utils import load_from_json_file, save_to_file
 
 COMMANDS = ['add', 'list', 'read', 'edit', 'del', 'exit', 'help', 'save']
 NEED_ID = ['read', 'edit', 'del']
@@ -25,12 +25,15 @@ def execute_command(command: str, notes: Notes) -> None:
     :return: None
     """
 
+    response = ''
     if command in NEED_ID:
         id = views.display_need_id()
 
     match command:
         case 'save':
-            pass
+            data = notes.get_notes()
+            if data:
+                save_to_file(data)
         case 'help':
             views.display_help()
         case 'add':
@@ -40,19 +43,25 @@ def execute_command(command: str, notes: Notes) -> None:
                        'msg': msg,
                        'date_of_create': str(datetime.now()),
                        'date_of_update': str(datetime.now())})
+            response = 'добавлена'
         case 'list':
             views.display_notes(notes.sort('date_of_update'))
         case 'exit':
             sys.exit()
         case 'del':
             notes.delete(id)
+            response = 'удалена'
         case 'edit':
             kwargs = views.display_edit(id)
             if kwargs:
                 notes.edit(**kwargs)
+                response = 'обновлена'
         case _:
             # read
             views.display_note(notes.read(id))
+
+    if response:
+        views.display_result(response)
 
 
 def run() -> None:

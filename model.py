@@ -83,7 +83,7 @@ class Notes:
         for x in self.collections:
             i = 0
             for y in sorted:
-                if x[field] <= y[field]:
+                if x[field] >= y[field]:
                     break
                 i += 1
             sorted[i:i] = [x]
