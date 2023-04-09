@@ -12,6 +12,7 @@ from utils import load_from_json_file
 from model import Notes
 
 COMMANDS = ['add', 'list', 'read', 'edit', 'del', 'exit', 'help', 'save']
+NEED_ID = ['read', 'edit', 'del']
 
 
 def execute_command(command: str, notes: Notes) -> None:
@@ -22,6 +23,8 @@ def execute_command(command: str, notes: Notes) -> None:
     :param command: str
     :return: None
     """
+    if command in NEED_ID:
+        id = views.display_need_id()
 
     match command:
         case 'save':
@@ -45,7 +48,7 @@ def execute_command(command: str, notes: Notes) -> None:
             pass
         case _:
             # read
-            pass
+            views.display_note(notes.read(id))
 
 
 def run() -> None:
@@ -64,6 +67,7 @@ def run() -> None:
         while True:
             # We try to execute the command received from the user
             command = input('Введите команду: ')
+            # Validate command
             if command.lower() in COMMANDS:
                 execute_command(command.lower(), notes)
     except ValueError as e:
