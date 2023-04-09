@@ -3,6 +3,8 @@
 Manages the collection of notes.
 """
 
+from datetime import datetime
+
 
 class Notes:
     """
@@ -52,7 +54,9 @@ class Notes:
         :param kwargs: Can be id, tittle, msg.
         :return: None
         """
-        print("Обновили")
+        note = self.__get_note_by_id(kwargs['id'])
+        kwargs.update({'date_of_update': str(datetime.now())})
+        note.update(kwargs)
 
     def delete(self, id: str) -> None:
         """
